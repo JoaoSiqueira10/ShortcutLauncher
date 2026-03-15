@@ -22,7 +22,13 @@
             <Button Content="Criar Atalho"
                     Width="120"
                     Margin="5"
-                    Command="{Binding CreateShortcutCommand}"/>            
+                    Command="{Binding CreateShortcutCommand}"/>
+
+            <TextBox Width="200"
+                     Margin="10 5 5 5"
+                     VerticalAlignment="Center"
+                     Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                     ToolTip="Buscar atalho..." />
 
         </StackPanel>
 
@@ -37,16 +43,13 @@
 
             <TabControl.ContentTemplate>
                 <DataTemplate>
-
                     <ScrollViewer>
                         <ItemsControl ItemsSource="{Binding Shortcuts}">
-
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <WrapPanel/>
                                 </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
-
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <ToggleButton Width="140"
@@ -59,7 +62,6 @@
 
                                         <ToggleButton.ContextMenu>
                                             <ContextMenu>
-
                                                 <MenuItem Header="Abrir"
                                                           Command="{Binding PlacementTarget.Tag.OpenShortcutCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                                                           CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
@@ -71,56 +73,43 @@
                                                 <MenuItem Header="Excluir"
                                                           Command="{Binding PlacementTarget.Tag.DeleteShortcutCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                                                           CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
-
                                             </ContextMenu>
                                         </ToggleButton.ContextMenu>
 
                                         <ToggleButton.Content>
-
                                             <StackPanel Orientation="Horizontal"
                                                         VerticalAlignment="Center">
-
                                                 <Image Source="{Binding Icon}"
                                                        Width="20"
                                                        Height="20"
                                                        Margin="0 0 6 0"/>
-
                                                 <TextBlock Text="{Binding Name}"
                                                            VerticalAlignment="Center"/>
-
                                             </StackPanel>
-
                                         </ToggleButton.Content>
+                                        
                                         <ToggleButton.Style>
                                             <Style TargetType="ToggleButton">
-
                                                 <Setter Property="Background" Value="LightGray"/>
-
+                                               
                                                 <Style.Triggers>
-
                                                     <Trigger Property="IsChecked" Value="True">
                                                         <Setter Property="Background" Value="LightBlue"/>
                                                         <Setter Property="BorderBrush" Value="DarkBlue"/>
                                                         <Setter Property="BorderThickness" Value="2"/>
                                                     </Trigger>
-
                                                 </Style.Triggers>
-
+                                                
                                             </Style>
                                         </ToggleButton.Style>
-                                    </ToggleButton>
-                                    
+                                        
+                                    </ToggleButton>                                    
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
-
                         </ItemsControl>
                     </ScrollViewer>
-
                 </DataTemplate>
             </TabControl.ContentTemplate>
-
         </TabControl>
-
     </DockPanel>
-
 </Window>

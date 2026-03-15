@@ -5,6 +5,8 @@ using System.Diagnostics;
 using System.Windows.Input;
 using ShortcutLauncher.Commands;
 using System.Windows;
+using System.ComponentModel;
+using System.Windows.Data;
 
 namespace ShortcutLauncher.ViewModels;
 
@@ -29,6 +31,8 @@ public class MainViewModel : BaseViewModel
         Groups = new ObservableCollection<ShortcutGroup>(groups);
         foreach (var group in Groups)
         {
+            group.Shortcuts = new ObservableCollection<Shortcut>(group.Shortcuts);
+
             foreach (var shortcut in group.Shortcuts)
             {
                 shortcut.Icon = IconService.GetIcon(shortcut.Path);
@@ -82,6 +86,7 @@ public class MainViewModel : BaseViewModel
 
             SelectedGroup.Shortcuts.Add(window.Shortcut);
 
+
             Save();
         }
     }
@@ -134,6 +139,18 @@ public class MainViewModel : BaseViewModel
         }
     }
 
+    private string _searchText = "";
+    public string SearchText
+    {
+        get => _searchText;
+        set
+        {
+            _searchText = value;
+            OnPropertyChanged();
+            FilterShortcuts();
+        }
+    }
+
     private void EditShortcut(object? parameter)
     {
         if (parameter is not Shortcut shortcut)
@@ -181,5 +198,27 @@ public class MainViewModel : BaseViewModel
         }
 
         Save();
+    }
+
+    private void FilterShortcuts()
+    {
+        foreach (var group in Groups)
+        {
+            ICollectionView view = CollectionViewSource.GetDefaultView(group.Shortcuts);
+
+            view.Filter = obj =>
+            {
+                if (obj is not Shortcut shortcut)
+                    return false;
+
+                if (string.IsNullOrWhiteSpace(SearchText))
+                    return true;
+
+                return shortcut.Name.Contains(SearchText,
+                    StringComparison.OrdinalIgnoreCase);
+            };
+
+            view.Refresh();
+        }
     }
 }
