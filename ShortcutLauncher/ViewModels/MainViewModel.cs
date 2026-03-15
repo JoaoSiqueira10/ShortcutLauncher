@@ -37,6 +37,10 @@ public class MainViewModel : BaseViewModel
             {
                 shortcut.Icon = IconService.GetIcon(shortcut.Path);
             }
+
+            ICollectionView view = CollectionViewSource.GetDefaultView(group.Shortcuts);
+
+            view.SortDescriptions.Add(new SortDescription(nameof(Shortcut.Name), ListSortDirection.Ascending));
         }
 
         OpenShortcutCommand = new RelayCommand(OpenShortcut);
@@ -86,6 +90,7 @@ public class MainViewModel : BaseViewModel
 
             SelectedGroup.Shortcuts.Add(window.Shortcut);
 
+            CollectionViewSource.GetDefaultView(SelectedGroup.Shortcuts).Refresh();
 
             Save();
         }
@@ -167,6 +172,8 @@ public class MainViewModel : BaseViewModel
             shortcut.Path = window.Shortcut.Path;
 
             shortcut.Icon = IconService.GetIcon(shortcut.Path);
+
+            CollectionViewSource.GetDefaultView(SelectedGroup.Shortcuts).Refresh();
 
             Save();
             OnPropertyChanged(nameof(Groups));
