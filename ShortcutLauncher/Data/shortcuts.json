@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "Planilhas",
+    "Shortcuts": [
+      {
+        "Name": "Fluxo de Caixa",
+        "Path": "C:\\Windows\\notepad.exe"
+      },
+      {
+        "Name": "DRE",
+        "Path": "C:\\Windows\\notepad.exe"
+      }
+    ]
+  }
+]
